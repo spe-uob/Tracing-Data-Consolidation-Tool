@@ -8,12 +8,16 @@ Key considerations;
 of data and to run any reports quickly. 
 
 # Project starter guide 
- Clone com.DataConsolidation folder.
- open the project folder in IntelliJ.
- Start the server by running /src/main/java/Group1.com.DataConsolidation/Application.
- cd into /src/main/frontend
- Check if node_modules is present. (sometimes this goes to gitinore for some reasons, npm start wont run if this is the case)
- If node_modules isnt in the frontend folder run npm install
+Clone com.DataConsolidation folder.
+
+open the project folder in IntelliJ.
+
+Start the server by running /src/main/java/Group1.com.DataConsolidation/Application.
+
+cd into /src/main/frontend
+
+Check if node_modules is present. (sometimes this goes to gitinore for some reasons, npm start wont run if this is the case)
+If node_modules isnt in the frontend folder run npm install
  
- npm start.
+npm start.
 
