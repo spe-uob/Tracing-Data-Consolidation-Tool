@@ -1,4 +1,7 @@
 # Tracing data consolidation tool
+
+[![spe-uob](https://circleci.com/gh/spe-uob/Tracing-Data-Consolidation-Tool.svg?style=shield)](https://app.circleci.com/pipelines/github/spe-uob/Tracing-Data-Consolidation-Tool)
+
 A consolidation tool to pull together the data spreadsheets,
 providing a consistent, clean set of data, with any duplicates identified and removed. 
 The tool should have the ability to interrogate data in order to draw off specific queries and to run management information reports.
