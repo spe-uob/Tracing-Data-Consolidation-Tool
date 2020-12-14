@@ -2,8 +2,22 @@ package Group1.com.DataConsolidation.DataProcessing;
 
 public class MoveRecord {
     public String id;
+    public String locationFrom;
+    public String locationTo;
+    public String activityFrom;
+    public String activityTo;
+    public String departDate;
+    public String arriveDate;
+    public String recordedDate;
+    public String status;
+    public String moveMethod;
+    public String moveDirection;
+    public String species;
+    public String animalNumber;
+    public String herdMark;
+    public String animalDescription;
+    public String departCountry;
+    public String arriveCountry;
 
-    public MoveRecord(String id) {
-        this.id = id;
-    }
+    public MoveRecord() {}
 }

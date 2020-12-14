@@ -21,10 +21,12 @@ public class DataConsolidator {
             throw new WorkbookParseException("empty workbook (no sheets)");
         }
 
-        // For now, only ARAMS parsing is implemented
         Sheet arams = wb.getSheetAt(0); // Will this always correspond to ARAMS?
         ARAMSParser aramsParser = new ARAMSParser(arams);
         ArrayList<MoveRecord> aramsMoves = aramsParser.parse();
+
+        // TODO: Parse scotland / wales sheets
+        // TODO: Merge all MoveRecords into one big array and deduplicate
 
         long numMoves = aramsMoves.size();
         return String.format("Parsed %d movements", numMoves);

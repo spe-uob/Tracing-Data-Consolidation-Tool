@@ -48,9 +48,10 @@ public class DataProcessingTests {
         for (Sheet sh : wb2) {
             String testName = sh.getSheetName();
             ARAMSParser p = new ARAMSParser(sh);
-            assertThrows(WorkbookParseException.class,
+            e = assertThrows(WorkbookParseException.class,
                     () -> p.parse(),
                     "didn't reject invalid arams sheet: " + testName);
+            System.out.println(e.getMessage());
         }
 
         // Should accept every sheet in this file
