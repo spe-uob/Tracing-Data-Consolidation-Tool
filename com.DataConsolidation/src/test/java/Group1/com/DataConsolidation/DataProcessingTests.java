@@ -2,10 +2,10 @@ package Group1.com.DataConsolidation;
 
 import Group1.com.DataConsolidation.DataProcessing.ARAMSParser;
 import Group1.com.DataConsolidation.DataProcessing.DataConsolidator;
-import Group1.com.DataConsolidation.DataProcessing.SpreadsheetParseException;
-import org.apache.poi.ss.usermodel.Row;
+import Group1.com.DataConsolidation.DataProcessing.WorkbookParseException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -22,42 +22,55 @@ public class DataProcessingTests {
     }
 
     @Test
-    void rejectsEmptyWorkbooks() {
-        // Null workbook
+    void rejectsInvalidWorkbooks() {
         assertThrows(IllegalArgumentException.class,
                 () -> new DataConsolidator(null));
 
-        // Empty workbook
-        Exception e = assertThrows(SpreadsheetParseException.class,
+        Exception e = assertThrows(WorkbookParseException.class,
                 () -> new DataConsolidator(new XSSFWorkbook()).parse());
-        assertEquals("empty spreadsheet", e.getMessage());
+        assertEquals("empty workbook (no sheets)", e.getMessage());
 
-        // Workbook with no rows
-        XSSFWorkbook wb = new XSSFWorkbook();
-        Sheet sheet = wb.createSheet("test sheet A");
-        e = assertThrows(SpreadsheetParseException.class,
-                () -> new DataConsolidator(wb).parse());
-        assertEquals("empty spreadsheet", e.getMessage());
-
-        // Workbook with no cells in the row
-        Row row = sheet.createRow(0);
-        e = assertThrows(SpreadsheetParseException.class,
-                () -> new DataConsolidator(wb).parse());
-        assertEquals("empty spreadsheet", e.getMessage());
+        // TODO: Test workbook with no data
+        // TODO: Test workbook with some sheets missing
     }
 
     @Test
-    void rejectsAramsInvalidFormat() {
-        XSSFWorkbook wb = assertDoesNotThrow(() -> loadExcelFile("arams_invalid.xlsx"));
-        for (Sheet sh : wb) {
+    void aramsParsing() {
+        // Should reject workbook with no rows
+        XSSFWorkbook wb1 = new XSSFWorkbook();
+        Sheet sheet = wb1.createSheet("test");
+        Exception e = assertThrows(WorkbookParseException.class,
+                () -> new ARAMSParser(sheet).parse());
+        assertEquals("ARAMS: empty spreadsheet (no headings)", e.getMessage());
+
+        // Should reject every sheet in this file
+        XSSFWorkbook wb2 = assertDoesNotThrow(() -> loadExcelFile("arams_invalid.xlsx"));
+        for (Sheet sh : wb2) {
+            String testName = sh.getSheetName();
             ARAMSParser p = new ARAMSParser(sh);
-            assertThrows(SpreadsheetParseException.class, () -> p.parse());
+            assertThrows(WorkbookParseException.class,
+                    () -> p.parse(),
+                    "didn't reject invalid arams sheet: " + testName);
+        }
+
+        // Should accept every sheet in this file
+        XSSFWorkbook wb3 = assertDoesNotThrow(() -> loadExcelFile("arams_valid.xlsx"));
+        for (Sheet sh : wb3) {
+            String testName = sh.getSheetName();
+            ARAMSParser p = new ARAMSParser(sh);
+            assertDoesNotThrow(
+                    () -> p.parse(),
+                    "didn't accept valid arams sheet: " + testName);
         }
     }
 
     @Test
+    @Disabled
     void parsesTestData() {
         XSSFWorkbook wb = assertDoesNotThrow(() -> loadExcelFile("test_data.xlsx"));
+        for (Sheet sh : wb) {
+            System.out.println(sh.getSheetName());
+        }
         DataConsolidator cs = assertDoesNotThrow(() -> new DataConsolidator(wb));
         String result = assertDoesNotThrow(() -> cs.parse());
         assertEquals("Parsed 12301 movements", result);
