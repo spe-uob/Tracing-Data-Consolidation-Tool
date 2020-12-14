@@ -67,7 +67,7 @@ public class DataProcessingTests {
     @Test
     @Disabled
     void parsesTestData() {
-        XSSFWorkbook wb = assertDoesNotThrow(() -> loadExcelFile("test_data.xlsx"));
+        XSSFWorkbook wb = assertDoesNotThrow(() -> loadExcelFile("test_data_cleaned.xlsx"));
         for (Sheet sh : wb) {
             System.out.println(sh.getSheetName());
         }
