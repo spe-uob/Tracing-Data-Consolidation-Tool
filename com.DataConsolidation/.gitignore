@@ -7,7 +7,6 @@ src/test/resources/test_data.xlsx
 src/test/resources/test_data_cleaned.xlsx
 src/main/resources/ProcessedFiles/*.xlsx
 src/main/resources/UploadedFiles/*.xlsx
-src/main/frontend/.eslintcache
 
 ### STS ###
 .apt_generated
