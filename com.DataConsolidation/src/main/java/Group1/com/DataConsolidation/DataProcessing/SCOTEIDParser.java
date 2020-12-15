@@ -4,12 +4,12 @@ import org.apache.poi.ss.usermodel.*;
 
 import java.util.*;
 
-public class ARAMSParser {
+public class SCOTEIDParser {
     private Sheet sheet;
     private Map<String, Integer> headings;
     private DataFormatter formatter;
 
-    public ARAMSParser(Sheet sheet) {
+    public SCOTEIDParser(Sheet sheet) {
         this.sheet = sheet;
         this.formatter = new DataFormatter();
     }
@@ -24,23 +24,16 @@ public class ARAMSParser {
             Row row = rowIter.next();
 
             MoveRecord move = new MoveRecord();
-            move.id = getCellData(row, "Movement ID");
-            move.locationFrom = getCellData(row, "From Premises");
-            move.locationTo = getCellData(row, "From Activity");
-            move.activityFrom = getCellData(row, "To Premises");
-            move.activityTo = getCellData(row, "To Activity");
-            move.departDate = getCellData(row, "Departure Date");
-            move.arriveDate = getCellData(row, "Arrival Date");
-            move.recordedDate = getCellData(row, "Recorded Date");
-            move.status = getCellData(row, "Status");
-            move.moveMethod = getCellData(row, "Move Method");
-            move.moveDirection = getCellData(row, "Move Direction");
-            move.species = getCellData(row, "Species");
-            move.animalNumber = getCellData(row, "Animal No");
-            move.herdMark = getCellData(row, "Herd Mark");
-            move.animalDescription = getCellData(row, "Animal Description");
-            move.departCountry = getCellData(row, "Dept Country");
-            move.arriveCountry = getCellData(row, "Dest Country");
+            move.id = getCellData(row, "Unique_Ref");
+            move.animalNumber = getCellData(row, "Sheep");
+            move.reads = getCellData(row, "Reads");
+            move.percentage = getCellData(row, "%");
+            move.moveMove = getCellData(row, "Move");
+            move.lotDate = getCellData(row, "Lot Date");
+            move.lotID = getCellData(row, "Lot");
+            move.locationFrom = getCellData(row, "Depart. CPH");
+            move.readLocation = getCellData(row, "Read location");
+            move.activityFrom = getCellData(row, "Dest. CPH");
 
             out.add(move);
         }
@@ -71,27 +64,19 @@ public class ARAMSParser {
 
     private Map<String, Integer> parseHeadings(Iterator<Row> rowIter) throws WorkbookParseException {
         if (!rowIter.hasNext())
-            throw new WorkbookParseException("ARAMS: empty spreadsheet (no headings)");
+            throw new WorkbookParseException("SCOT EID: empty spreadsheet (no headings)");
 
         String[] headingNames = {
-                "Movement ID",
-                "From Premises",
-                "From Activity",
-                "To Premises",
-                "To Activity",
-                "Departure Date",
-                "Arrival Date",
-                "Recorded Date",
-                "Status",
-                "Move Method",
-                "Move Direction",
-                "Species",
-                "Animal No",
-                "Herd Mark",
-                "Animal Count",
-                "Animal Description",
-                "Dept Country",
-                "Dest Country"
+                "Unique_Ref",
+                "Sheep",
+                "Reads",
+                "%",
+                "Move",
+                "Lot Date",
+                "Lot",
+                "Depart. CPH",
+                "Read location",
+                "Dest. CPH"
         };
 
         Map<String, Integer> headings = new HashMap<>();
@@ -107,7 +92,7 @@ public class ARAMSParser {
                 if (value.compareToIgnoreCase(name) == 0) {
                     Integer oldIndex = headings.putIfAbsent(value, cell.getColumnIndex());
                     if (!Objects.isNull(oldIndex)) {
-                        String msg = String.format("ARAMS: duplicate heading '%s'", value);
+                        String msg = String.format("SCOT EID: duplicate heading '%s'", value);
                         throw new WorkbookParseException(msg);
                     }
                 }
@@ -124,8 +109,8 @@ public class ARAMSParser {
             }
 
             throw new WorkbookParseException(
-                    "ARAMS: didn't find all headings - missing "
-                    + String.join(", ", missingHeadings));
+                    "SCOT EID: didn't find all headings - missing "
+                            + String.join(", ", missingHeadings));
         }
 
         return headings;
