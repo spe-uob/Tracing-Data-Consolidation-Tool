@@ -19,5 +19,15 @@ public class MoveRecord {
     public String departCountry;
     public String arriveCountry;
 
+    // Wales
+    // Can we merge any of these with the above?
+    public String ref;
+    public String count;
+    public String lot;
+    public String date;
+    public String createdBy;
+    public String cphFrom;
+    public String cphTo;
+
     public MoveRecord() {}
 }

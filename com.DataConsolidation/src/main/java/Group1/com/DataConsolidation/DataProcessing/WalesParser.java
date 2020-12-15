@@ -13,16 +13,16 @@ public class WalesParser{
         this.formatter = new DataFormatter();
      }
 
-     public ArrayList<MoveWales> parse() throws WorkbookParseException {
+     public ArrayList<MoveRecord> parse() throws WorkbookParseException {
          Iterator<Row> rowIter = this.sheet.rowIterator();
          this.headings = parseHeadings(rowIter);
 
-         ArrayList<MoveWales> out = new ArrayList();
+         ArrayList<MoveRecord> out = new ArrayList();
 
          while (rowIter.hasNext()) {
              Row row = rowIter.next();
 
-             MoveWales move = new MoveWales();
+             MoveRecord move = new MoveRecord();
              move.ref = getCellData(row, "Ref");
              move.count = getCellData(row, "Count");
              move.species = getCellData(row, "Species");

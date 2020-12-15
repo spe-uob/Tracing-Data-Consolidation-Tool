@@ -3,6 +3,7 @@ package Group1.com.DataConsolidation;
 import Group1.com.DataConsolidation.DataProcessing.ARAMSParser;
 import Group1.com.DataConsolidation.DataProcessing.DataConsolidator;
 import Group1.com.DataConsolidation.DataProcessing.WorkbookParseException;
+import Group1.com.DataConsolidation.DataProcessing.WalesParser;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Disabled;

@@ -30,7 +30,7 @@ public class DataConsolidator {
 
         Sheet wales = wb.getSheetAt(1);
         WalesParser walesParser = new WalesParser(wales);
-        ArrayList<MoveWales> walesMoves = walesParser.parse();
+        ArrayList<MoveRecord> walesMoves = walesParser.parse();
 
 
         long numMoves = aramsMoves.size();
