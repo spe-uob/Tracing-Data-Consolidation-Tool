@@ -1,7 +1,6 @@
 package Group1.com.DataConsolidation.DataProcessing;
 
 public class MoveRecord {
-    // ARAMS
     public String id;
     public String locationFrom;
     public String locationTo;
@@ -26,15 +25,9 @@ public class MoveRecord {
     public String lotID;
     public String readLocation;
 
-    // Wales
     // Can we merge any of these with the above?
-    public String ref;
     public String count;
-    public String lot;
-    public String date;
     public String createdBy;
-    public String cphFrom;
-    public String cphTo;
 
     public MoveRecord() {}
 }

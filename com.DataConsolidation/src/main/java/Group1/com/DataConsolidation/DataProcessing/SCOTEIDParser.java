@@ -24,15 +24,15 @@ public class SCOTEIDParser {
             Row row = rowIter.next();
 
             MoveRecord move = new MoveRecord();
-            move.id = getCellData(row, " Unique _Ref");
+            move.id = getCellData(row, "Unique_Ref");
             move.animalNumber = getCellData(row, "Sheep");
             move.reads = getCellData(row, "Reads");
             move.percentage = getCellData(row, "%");
             move.moveMove = getCellData(row, "Move");
             move.lotDate = getCellData(row, "Lot Date");
-            move.lotID = getCellData(row, " Lot");
-            move.locationFrom = getCellData(row, " Depart. CPH");
-            move.readLocation = getCellData(row, " Read location");
+            move.lotID = getCellData(row, "Lot");
+            move.locationFrom = getCellData(row, "Depart. CPH");
+            move.readLocation = getCellData(row, "Read Location");
             move.activityFrom = getCellData(row, "Dest. CPH");
 
             out.add(move);
@@ -75,7 +75,7 @@ public class SCOTEIDParser {
                 "Lot Date",
                 "Lot",
                 "Depart. CPH",
-                "Read location",
+                "Read Location",
                 "Dest. CPH"
         };
 

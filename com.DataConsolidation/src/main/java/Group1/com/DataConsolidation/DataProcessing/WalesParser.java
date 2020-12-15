@@ -23,13 +23,13 @@ public class WalesParser{
              Row row = rowIter.next();
 
              MoveRecord move = new MoveRecord();
-             move.ref = getCellData(row, "Ref");
+             move.id = getCellData(row, "Ref");
              move.count = getCellData(row, "Count");
              move.species = getCellData(row, "Species");
-             move.lot = getCellData(row, "Lot");
-             move.date = getCellData(row, "Date");
-             move.cphFrom = getCellData(row, "From CPH");
-             move.cphTo = getCellData(row, "To CPH");
+             move.lotID = getCellData(row, "Lot");
+             move.lotDate = getCellData(row, "Date");
+             move.locationFrom = getCellData(row, "From CPH");
+             move.locationTo = getCellData(row, "To CPH");
              move.createdBy = getCellData(row, "Created By");
 
              out.add(move);
