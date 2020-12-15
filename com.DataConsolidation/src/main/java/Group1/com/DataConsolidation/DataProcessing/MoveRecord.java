@@ -19,6 +19,12 @@ public class MoveRecord {
     public String animalDescription;
     public String departCountry;
     public String arriveCountry;
+    public String reads;
+    public String percentage;
+    public String moveMove;
+    public String lotDate;
+    public String lotID;
+    public String readLocation;
 
     // Wales
     // Can we merge any of these with the above?
