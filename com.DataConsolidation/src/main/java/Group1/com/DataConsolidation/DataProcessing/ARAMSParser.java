@@ -40,7 +40,7 @@ public class ARAMSParser {
             move.herdMark = getCellData(row, "Herd Mark");
             move.animalDescription = getCellData(row, "Animal Description");
             move.departCountry = getCellData(row, "Dept Country");
-            move.departDate = getCellData(row, "Dest Country");
+            move.arriveCountry = getCellData(row, "Dest Country");
 
             out.add(move);
         }

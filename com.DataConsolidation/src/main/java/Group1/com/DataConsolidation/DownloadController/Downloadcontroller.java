@@ -4,6 +4,7 @@ package Group1.com.DataConsolidation.DownloadController;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -15,8 +16,7 @@ public class Downloadcontroller {
     @RequestMapping(value = "/serve", method = RequestMethod.GET, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     @ResponseBody
     public byte[] getFile () throws IOException {
-        var ServeFile = new ClassPathResource("ProcessedFiles/processed.xlsx");
-        InputStream inputStream = ServeFile.getInputStream();
+        InputStream inputStream = new FileInputStream("src/main/resources/ProcessedFiles/processed.xlsx");
         byte[] buffer = new byte[inputStream.available()];
         inputStream.read(buffer);
 

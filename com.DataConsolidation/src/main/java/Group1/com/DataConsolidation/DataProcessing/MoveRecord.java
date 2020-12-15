@@ -1,6 +1,7 @@
 package Group1.com.DataConsolidation.DataProcessing;
 
 public class MoveRecord {
+    // ARAMS
     public String id;
     public String locationFrom;
     public String locationTo;
