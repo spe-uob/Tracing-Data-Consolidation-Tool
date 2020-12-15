@@ -28,6 +28,11 @@ public class DataConsolidator {
         // TODO: Parse scotland / wales sheets
         // TODO: Merge all MoveRecords into one big array and deduplicate
 
+        Sheet wales = wb.getSheetAt(1);
+        WalesParser walesParser = new WalesParser(wales);
+        ArrayList<MoveWales> walesMoves = walesParser.parse();
+
+
         long numMoves = aramsMoves.size();
         return String.format("Parsed %d movements", numMoves);
     }
