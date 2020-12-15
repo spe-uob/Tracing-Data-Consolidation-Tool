@@ -1,5 +1,6 @@
 import React from 'react';
-import './upload.css';
+import './UploadFile.css';
+import axios from 'axios';
 
 class UploadFile extends React.Component {
 	
@@ -19,16 +20,21 @@ class UploadFile extends React.Component {
 		this.setState({msg: ''});
 
 		let data = new FormData();
-		data.append('file', this.state.file);
+        data.append('file', this.state.file);
+        
+        axios.post(`http://localhost:8080/upload`,data)
+        .then(res => {
+            console.log("Hello");
+            console.log(res.data);
+            this.setState({
+                msg:"File Successfully Uploaded"
+            })
+        }).catch(error => {
+            this.setState({
+                error : error
+            });
+        })
 
-		fetch('http://localhost:8080/upload', {
-			method: 'POST',
-			body: data
-		}).then(response => {
-			this.setState({msg: "File successfully uploaded"});
-		}).catch(err => {
-			this.setState({error: err});
-		});
 
 	}
 	
