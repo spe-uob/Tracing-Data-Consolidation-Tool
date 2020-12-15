@@ -1,19 +1,19 @@
 import React from 'react';
-import './upload.css';
+import styles from './UploadFile.module.css';
 
 class UploadFile extends React.Component {
-	
+
 	constructor(props) {
 		super(props);
 		this.state = {file: '', msg: ''};
 	}
-	
+
 	onFileChange = (event) => {
 		this.setState({
 			file: event.target.files[0]
 		});
 	}
-	
+
 	uploadFileData = (event) => {
 		event.preventDefault();
 		this.setState({msg: ''});
@@ -31,10 +31,10 @@ class UploadFile extends React.Component {
 		});
 
 	}
-	
+
 	render() {
 		return (
-			<div id="container">
+			<div id={styles.container}>
 				<h1>Excel Files to Upload</h1>
 				<h3>Upload a File</h3>
 				<h4>{this.state.msg}</h4>
@@ -43,7 +43,6 @@ class UploadFile extends React.Component {
 			</div>
 		)
 	}
-
 }
 
 export default UploadFile;

@@ -1,15 +1,15 @@
 import logo from './logo.svg';
-import './App.css';
+import styles from './App.module.css';
 import UploadFile from './Uploadhandler/UploadFile';
 import Knitform from './KnitHandler/Knitform'
 
 function App() {
-  return (
-    <div className="App">
-      <UploadFile></UploadFile>
-      <Knitform></Knitform>
-    </div>
-  );
+	return (
+		<div className={styles.App}>
+			<UploadFile></UploadFile>
+			<Knitform></Knitform>
+		</div>
+	);
 }
 
 export default App;
