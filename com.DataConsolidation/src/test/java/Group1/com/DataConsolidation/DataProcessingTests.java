@@ -3,6 +3,7 @@ package Group1.com.DataConsolidation;
 import Group1.com.DataConsolidation.DataProcessing.ARAMSParser;
 import Group1.com.DataConsolidation.DataProcessing.DataConsolidator;
 import Group1.com.DataConsolidation.DataProcessing.WorkbookParseException;
+import Group1.com.DataConsolidation.DataProcessing.WalesParser;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Disabled;
@@ -32,6 +33,38 @@ public class DataProcessingTests {
 
         // TODO: Test workbook with no data
         // TODO: Test workbook with some sheets missing
+
+    }
+
+    @Test
+    void walesParsing() {
+        // Should reject workbook with no rows
+        XSSFWorkbook wb1 = new XSSFWorkbook();
+        Sheet sheet = wb1.createSheet("test");
+        Exception e = assertThrows(WorkbookParseException.class,
+                () -> new WalesParser(sheet).parse());
+        assertEquals("Wales: empty spreadsheet (no headings)", e.getMessage());
+
+        // Should reject every sheet in this file
+        XSSFWorkbook wb2 = assertDoesNotThrow(() -> loadExcelFile("wales_invalid.xlsx"));
+        for (Sheet sh : wb2) {
+            String testName = sh.getSheetName();
+            WalesParser p = new WalesParser(sh);
+            e = assertThrows(WorkbookParseException.class,
+                    () -> p.parse(),
+                    "didn't reject invalid wales sheet: " + testName);
+            System.out.println(e.getMessage());
+        }
+
+        // Should accept every sheet in this file
+        XSSFWorkbook wb3 = assertDoesNotThrow(() -> loadExcelFile("wales_valid.xlsx"));
+        for (Sheet sh : wb3) {
+            String testName = sh.getSheetName();
+            WalesParser p = new WalesParser(sh);
+            assertDoesNotThrow(
+                    () -> p.parse(),
+                    "didn't accept valid wales sheet: " + testName);
+        }
     }
 
     @Test
