@@ -34,12 +34,12 @@ class UploadFile extends React.Component {
 
 	render() {
 		return (
-			<div id={styles.container}>
-				<h1>Excel Files to Upload</h1>
-				<h3>Upload a File</h3>
-				<h4>{this.state.msg}</h4>
-				<input onChange={this.onFileChange} type="file"></input>
-				<button disabled={!this.state.file} onClick={this.uploadFileData}>Upload</button>
+			<div className={styles.main}>
+				<h1 className={styles.header}>Excel Files to Upload</h1>
+				<h3 className={styles.header}>Upload a File</h3>
+				<input onChange={this.onFileChange} type="file" />
+				<button className={styles.button} disabled={!this.state.file} onClick={this.uploadFileData}>Upload</button>
+				<h4 className={styles.statusMessage}>{this.state.msg}</h4>
 			</div>
 		)
 	}
