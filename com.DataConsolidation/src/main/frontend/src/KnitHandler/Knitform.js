@@ -25,7 +25,7 @@ class Knitform extends React.Component{
 				<div className={styles.note}>Please note that processing may take up to 30 seconds.</div>
 				<div className={styles.buttonContainer}>
 					<button className={styles.button} onClick={() => this.Knit()}>Consolidate</button>
-					<a className={styles.button} href="http://localhost:8080/serve">Download</a>
+					<a className={styles.button} href="http://localhost:8080/Processed.xlsx">Download</a>
 				</div>
 			</div>
 		)

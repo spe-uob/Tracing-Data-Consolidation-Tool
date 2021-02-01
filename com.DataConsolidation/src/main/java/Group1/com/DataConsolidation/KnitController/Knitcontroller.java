@@ -35,26 +35,15 @@ public class Knitcontroller {
     @PostMapping("/knit")
     public String knit(@RequestParam("action") String action){
         if(action == null){
-            throw new RuntimeException("You must select the a file for knitting");
+            throw new RuntimeException("No files for knitting");
         }
-
 
         logger.info("Knit received here");
         KnitEvent knitevent = new KnitEvent(this);
         applicationEventPublisher.publishEvent(knitevent);
 
         // Read excel file from X, parse, write excel file to Y
-        try (InputStream inStream = new FileInputStream(UPLOADED_FOLDER + "targetFile.xlsx")) {
-            var outFile = new File("src/main/resources/ProcessedFiles/processed.xlsx");
-            outFile.createNewFile();
-            OutputStream outStream = new FileOutputStream(outFile);
-            Workbook wbIn = WorkbookFactory.create(inStream);
-            XSSFWorkbook wbOut = new DataConsolidator(wbIn).parse();
-            wbOut.write(outStream);
-            log.info("Processing done");
-        } catch (IOException | WorkbookParseException e) {
-            e.printStackTrace();
-        }
+
 
         return "knit received";
     }
