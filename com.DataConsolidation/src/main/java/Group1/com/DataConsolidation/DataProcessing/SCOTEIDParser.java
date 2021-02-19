@@ -1,15 +1,17 @@
 package Group1.com.DataConsolidation.DataProcessing;
 
 import org.apache.poi.ss.usermodel.*;
+import org.springframework.data.util.Pair;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class SCOTEIDParser extends Parser {
-    public SCOTEIDParser(Sheet sheet) {
-        super(sheet, "SCOT EID");
+    public SCOTEIDParser(Sheet sheet, CPH outbreakSource) {
+        super(sheet, "SCOT EID", outbreakSource);
     }
 
-    public ArrayList<MoveRecord> parse() throws WorkbookParseException {
+    public Pair<ArrayList<MoveRecord>, ArrayList<MoveRecord>> parse() throws WorkbookParseException {
         Iterator<Row> rowIter = this.sheet.rowIterator();
 
         String[] headingNames = {
@@ -27,7 +29,7 @@ public class SCOTEIDParser extends Parser {
 
         parseHeadings(rowIter, headingNames);
 
-        ArrayList<MoveRecord> out = new ArrayList();
+        ArrayList<MoveRecord> out = new ArrayList<>();
 
         while (rowIter.hasNext()) {
             Row row = rowIter.next();
@@ -40,13 +42,20 @@ public class SCOTEIDParser extends Parser {
             move.moveMove = getCellData(row, "Move");
             move.lotDate = getCellData(row, "Lot Date");
             move.lotID = getCellData(row, "Lot");
-            move.locationFrom = getCellData(row, "Depart. CPH");
+            move.locationFrom = new CPH(getCellData(row, "Depart. CPH"));
             move.readLocation = getCellData(row, "Read Location");
-            move.activityFrom = getCellData(row, "Dest. CPH");
+            move.locationTo = new CPH(getCellData(row, "Dest. CPH"));
+            move.departCountry = move.locationFrom.getCountry();
+            move.arriveCountry = move.locationTo.getCountry();
+            move.arriveDate = parseDate(move.lotDate); // TODO: Is this correct?
+            move.departDate = parseDate(move.lotDate);
 
-            out.add(move);
+            if (!move.isEmpty()) {
+                out.add(move);
+            }
         }
 
-        return out;
+        // We know whether it was from or to the source based on which sheet is being parsed
+        return Pair.of(out, new ArrayList<>());
     }
 }

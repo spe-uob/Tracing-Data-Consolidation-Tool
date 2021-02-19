@@ -1,5 +1,6 @@
 package Group1.com.DataConsolidation.KnitController;
 
+import Group1.com.DataConsolidation.DataProcessing.CPH;
 import Group1.com.DataConsolidation.DataProcessing.DataConsolidator;
 import Group1.com.DataConsolidation.DataProcessing.WorkbookParseException;
 import Group1.com.DataConsolidation.UploadHandlerController.UploadController;
@@ -27,7 +28,8 @@ public class KnitListener implements ApplicationListener<KnitEvent> {
             outFile.createNewFile();
             OutputStream outStream = new FileOutputStream(outFile);
             Workbook wbIn = WorkbookFactory.create(inStream);
-            XSSFWorkbook wbOut = new DataConsolidator(wbIn).parse();
+            CPH tempOutbreakSource = new CPH("08/548/4000"); // TODO: Hook this value up to the frontend
+            XSSFWorkbook wbOut = new DataConsolidator(wbIn).parse(tempOutbreakSource);
             wbOut.write(outStream);
             log.info("Processing done");
         } catch (IOException | WorkbookParseException e) {
