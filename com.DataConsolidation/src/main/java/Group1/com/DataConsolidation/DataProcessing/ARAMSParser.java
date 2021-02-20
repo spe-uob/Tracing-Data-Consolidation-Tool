@@ -54,13 +54,14 @@ public class ARAMSParser extends Parser {
 
             if (currentMove != null && currentMove.id.equals(getCellData(row, "Movement ID"))) {
                 // This row is part of the current movement, so accumulate.
-                bulkCount += 1;
+                bulkCount += 1; // TODO: Is this always going to be 1?
             } else {
                 // This row is part of a different movement to the previous row. Commit the last move
                 // and create a new one.
 
                 if (currentMove != null && !currentMove.isEmpty()) {
-                    currentMove.count = Integer.toString(bulkCount);
+                    currentMove.animalCount = Integer.toString(bulkCount);
+                    currentMove.originatingSheet = this.parserName;
                     if (currentMove.isFromInfected(this.outbreakSource)) {
                         outFrom.add(currentMove);
                     } else {

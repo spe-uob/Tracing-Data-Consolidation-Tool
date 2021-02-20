@@ -36,7 +36,7 @@ public class SCOTEIDParser extends Parser {
 
             MoveRecord move = new MoveRecord();
             move.id = getCellData(row, "Unique_Ref");
-            move.animalNumber = getCellData(row, "Sheep");
+            move.animalCount = getCellData(row, "Sheep");
             move.reads = getCellData(row, "Reads");
             move.percentage = getCellData(row, "%");
             move.moveMove = getCellData(row, "Move");
@@ -51,6 +51,7 @@ public class SCOTEIDParser extends Parser {
             move.departDate = parseDate(move.lotDate);
 
             if (!move.isEmpty()) {
+                move.originatingSheet = this.parserName;
                 out.add(move);
             }
         }

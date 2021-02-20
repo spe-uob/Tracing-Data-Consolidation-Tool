@@ -1,13 +1,9 @@
 package Group1.com.DataConsolidation.DataProcessing;
 
-import javassist.Loader;
-import org.apache.poi.ss.usermodel.Row;
-
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
 
 public class MoveRecord {
     public String id;
@@ -18,7 +14,7 @@ public class MoveRecord {
     public String moveMethod;
     public String moveDirection;
     public String species;
-    public String animalNumber;
+    public String animalCount;
     public String animalDescription;
     public String reads;
     public String percentage;
@@ -26,18 +22,14 @@ public class MoveRecord {
     public String lotDate;
     public String lotID;
     public String readLocation;
+    public String createdBy;
+    public String departCountry;
+    public String arriveCountry;
+    public String originatingSheet;
     public CPH locationFrom;
     public CPH locationTo;
     public Date departDate;
     public Date arriveDate;
-
-    // TODO: Can we merge either of these with the above?
-    public String count;
-    public String createdBy;
-
-    // We don't expect any of these to be empty
-    public String departCountry;
-    public String arriveCountry;
 
     public MoveRecord() {}
 
@@ -52,9 +44,7 @@ public class MoveRecord {
             }
         }
 
-        // We don't expect the departCountry and arriveCountry fields to be empty,
-        // as we fill them from the CPH numbers.
-        return numFieldsEmpty == fieldList.length - 2;
+        return numFieldsEmpty == fieldList.length;
     }
 
     public boolean isFromInfected(CPH outbreakSource) {
@@ -75,7 +65,7 @@ public class MoveRecord {
             } else if (field.getType() == Date.class) {
                 Date d = (Date)field.get(this);
                 if (Objects.isNull(d)) {
-                    return null;
+                    return "";
                 } else {
                     return new SimpleDateFormat("dd/MM/yyyy").format(d);
                 }
@@ -87,4 +77,44 @@ public class MoveRecord {
         }
     }
 
+    // Checks if two moves are a duplicate of each other
+    public MoveComparison compareTo(MoveRecord other) {
+        if (this.originatingSheet.equals(other.originatingSheet)) {
+            // We assume no moves are duplicated within the same input sheet
+            return MoveComparison.Unequal;
+        } else if (!datesOverlap(other)) {
+            return MoveComparison.Unequal;
+        } else if (!this.locationFrom.equals(other.locationFrom) || !this.locationTo.equals(other.locationTo)) {
+            return MoveComparison.Unequal;
+        } else if (this.animalCount.equals(other.animalCount)) {
+            return MoveComparison.Equal;
+        } else if (countsApproximatelyEqual(this.animalCount, other.animalCount)) {
+            return MoveComparison.ApproxEqual;
+        } else {
+            return MoveComparison.Unequal;
+        }
+    }
+
+    private boolean datesOverlap(MoveRecord other) {
+        boolean arriveDatesEqual = Objects.nonNull(this.arriveDate)
+                && Objects.nonNull(other.arriveDate)
+                && this.arriveDate.equals(other.arriveDate);
+        boolean departDatesEqual = Objects.nonNull(this.departDate)
+                && Objects.nonNull(other.departDate)
+                && this.departDate.equals(other.departDate);
+        return arriveDatesEqual || departDatesEqual;
+    }
+
+    // Check if the counts are equal to within ~10%
+    private boolean countsApproximatelyEqual(String countA, String countB) {
+        try {
+            int a = Integer.parseUnsignedInt(countA);
+            int b = Integer.parseUnsignedInt(countB);
+            float absDiff = (float)Math.abs(a - b);
+            float maxRelativeError = 0.1f * ((float)a + (float)b) / 2.0f;
+            return absDiff <= maxRelativeError;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

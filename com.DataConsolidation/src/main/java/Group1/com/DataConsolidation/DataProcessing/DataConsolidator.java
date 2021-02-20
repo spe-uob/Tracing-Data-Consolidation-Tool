@@ -57,7 +57,8 @@ public class DataConsolidator {
                 .thenComparing((MoveRecord m) -> m.departDate, Comparator.nullsLast(Comparator.naturalOrder()))
         );
 
-        // TODO: Deduplicate the MoveRecords
+        deduplicate(movesFrom);
+        deduplicate(movesTo);
 
         XSSFWorkbook wb = new XSSFWorkbook();
         Sheet sheetFrom = wb.createSheet("From Infected");
@@ -87,6 +88,21 @@ public class DataConsolidator {
             }
 
             rowIndex += 1;
+        }
+    }
+
+    // We assume, following the sorting we perform, that duplicates will be listed consecutively
+    private void deduplicate(ArrayList<MoveRecord> moves) {
+        for (int i = 1; i < moves.size(); i++) {
+            MoveComparison comparison = moves.get(i).compareTo(moves.get(i - 1));
+            if (comparison == MoveComparison.Equal) {
+                // We have a duplicate
+                // TODO: Merge the records rather than just deleting whichever one appears second
+                moves.remove(i);
+                i--;
+            } else if (comparison == MoveComparison.ApproxEqual) {
+                // TODO: Do something like highlight the rows to indicate that there was an approximate match
+            }
         }
     }
 }

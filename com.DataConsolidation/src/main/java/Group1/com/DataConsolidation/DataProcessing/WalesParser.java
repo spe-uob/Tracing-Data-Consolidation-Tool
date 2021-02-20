@@ -35,7 +35,7 @@ public class WalesParser extends Parser{
 
              MoveRecord move = new MoveRecord();
              move.id = getCellData(row, "Ref");
-             move.count = getCellData(row, "Count");
+             move.animalCount = getCellData(row, "Count");
              move.species = getCellData(row, "Species");
              move.lotID = getCellData(row, "Lot");
              move.locationFrom = new CPH(getCellData(row, "From CPH"));
@@ -47,6 +47,7 @@ public class WalesParser extends Parser{
              move.arriveDate = move.departDate;
 
              if (!move.isEmpty()) {
+                 move.originatingSheet = this.parserName;
                  if (move.isFromInfected(this.outbreakSource)) {
                      outFrom.add(move);
                  } else {

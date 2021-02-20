@@ -15,7 +15,8 @@ public class CPH {
             // The country can be identified by looking at the first two digits
             digits = Integer.parseUnsignedInt(this.number, 0, 2, 10);
         } catch (Exception e) {
-            return "UNKNOWN";
+            // It is important to return empty strings here so that empty records get treated as empty
+            return "";
         }
 
         // 1  - 51: England
@@ -28,7 +29,16 @@ public class CPH {
         } else if (67 <= digits && digits <= 99) {
             return "Scotland";
         } else {
-            return "UNKNOWN";
+            return "";
+        }
+    }
+
+    public boolean equals(CPH other) {
+        if (this == other) {
+            return true;
+        } else {
+            // TODO: Make sure that whitespace doesn't mess up this comparison
+            return this.number.equals(other.number);
         }
     }
 }
