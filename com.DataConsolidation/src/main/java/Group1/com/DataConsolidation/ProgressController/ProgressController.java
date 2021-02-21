@@ -11,6 +11,7 @@ public class ProgressController {
     @CrossOrigin(value = "http://localhost:3000")
     @GetMapping(value = "/progress", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Integer> getProgress(){
+
         return Flux.interval(Duration.ofSeconds(1)).map(it -> new Integer(5));
     }
 }

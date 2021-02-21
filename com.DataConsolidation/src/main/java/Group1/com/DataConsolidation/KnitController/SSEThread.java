@@ -2,11 +2,11 @@ package Group1.com.DataConsolidation.KnitController;
 
 import java.util.logging.Logger;
 
-class TestTestThread implements Runnable{
-    private static final Logger logger = Logger.getLogger(TestTestThread.class.getName());
+class SSEThread implements Runnable{
+    private static final Logger logger = Logger.getLogger(Group1.com.DataConsolidation.KnitController.SSEThread.class.getName());
     Thread thread;
     private String threadname;
-    public TestTestThread(String threadname) {
+    public SSEThread(String threadname) {
         this.threadname = threadname;
     }
     @Override

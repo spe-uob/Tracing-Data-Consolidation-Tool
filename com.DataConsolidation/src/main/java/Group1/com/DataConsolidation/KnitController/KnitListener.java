@@ -22,19 +22,8 @@ public class KnitListener implements ApplicationListener<KnitEvent> {
     @Override
     public void onApplicationEvent(KnitEvent event) {
         logger.info("event listened");
-        try (InputStream inStream = new FileInputStream(UPLOADED_FOLDER + "targetFile.xlsx")) {
-            var outFile = new File("src/main/resources/ProcessedFiles/processed.xlsx");
-            outFile.createNewFile();
-            OutputStream outStream = new FileOutputStream(outFile);
-            Workbook wbIn = WorkbookFactory.create(inStream);
-            XSSFWorkbook wbOut = new DataConsolidator(wbIn).parse();
-            wbOut.write(outStream);
-            logger.info("Processing done");
-        } catch (IOException | WorkbookParseException e) {
-            e.printStackTrace();
-        }
-        TestTestThread parsethread = new TestTestThread("parsethread");
-        TestTestThread SSEthread = new TestTestThread("SSEthread");
+        ParseThread parsethread = new ParseThread("parsethread");
+        SSEThread SSEthread = new SSEThread("SSEthread");
         parsethread.start();
         SSEthread.start();
 
