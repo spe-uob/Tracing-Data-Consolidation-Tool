@@ -29,11 +29,14 @@ public class KnitListener implements ApplicationListener<KnitEvent> {
             Workbook wbIn = WorkbookFactory.create(inStream);
             XSSFWorkbook wbOut = new DataConsolidator(wbIn).parse();
             wbOut.write(outStream);
-            log.info("Processing done");
+            logger.info("Processing done");
         } catch (IOException | WorkbookParseException e) {
             e.printStackTrace();
         }
-        //Calling duplication functions here. These functions will run when the knit button on the frontend is clicked
+        TestTestThread parsethread = new TestTestThread("parsethread");
+        TestTestThread SSEthread = new TestTestThread("SSEthread");
+        parsethread.start();
+        SSEthread.start();
 
     }
 }

@@ -1,6 +1,7 @@
 import styles from './App.module.css';
 import UploadFile from './Uploadhandler/UploadFile';
 import Knitform from './KnitHandler/Knitform';
+import ProgressBar from './ProgressBar/ProgressBar'
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 					</div>
 				</div>
 			</div>
+			<ProgressBar></ProgressBar>
 		</div>
 	);
 }
