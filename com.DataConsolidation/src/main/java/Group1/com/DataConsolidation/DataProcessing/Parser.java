@@ -1,9 +1,10 @@
 package Group1.com.DataConsolidation.DataProcessing;
 
 import org.apache.poi.ss.usermodel.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.data.util.Pair;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public abstract class Parser {
@@ -11,16 +12,21 @@ public abstract class Parser {
     protected DataFormatter formatter;
     protected Map<String, Integer> headings;
     protected String parserName;
+    protected SimpleDateFormat dateFormat;
+    protected CPH outbreakSource;
     protected Progress progress;
 
-    public Parser(Sheet sheet, Progress progress, String parserName) {
+    public Parser(Sheet sheet, Progress progress, CPH outbreakSource, String parserName) {
         this.sheet = sheet;
         this.formatter = new DataFormatter();
         this.parserName = parserName;
         this.progress = progress;
+        this.dateFormat = new SimpleDateFormat("dd/MM/yy");
+        this.outbreakSource = outbreakSource;
     }
 
-    public abstract ArrayList<MoveRecord> parse() throws WorkbookParseException;
+    // Returns a pair: (moves from infected, moves to infected)
+    public abstract Pair<ArrayList<MoveRecord>, ArrayList<MoveRecord>> parse() throws WorkbookParseException;
 
     protected WorkbookParseException makeError(String s) {
         return new WorkbookParseException(this.parserName + ": " + s);
@@ -85,6 +91,14 @@ public abstract class Parser {
                         formatter.formatCellValue(cell));
                 throw makeError(msg);*/
                 return this.formatter.formatCellValue(cell);
+        }
+    }
+
+    protected Date parseDate(String row) {
+        try {
+            return this.dateFormat.parse(row);
+        } catch (ParseException e) {
+            return null;
         }
     }
 }

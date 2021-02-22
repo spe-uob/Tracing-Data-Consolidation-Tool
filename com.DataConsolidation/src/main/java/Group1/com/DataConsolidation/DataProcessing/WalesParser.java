@@ -1,15 +1,17 @@
 package Group1.com.DataConsolidation.DataProcessing;
 
 import org.apache.poi.ss.usermodel.*;
+import org.springframework.data.util.Pair;
+
 import java.util.*;
 
 public class WalesParser extends Parser{
 
-     public WalesParser(Sheet sheet, Progress progress) {
-         super(sheet, progress, "Wales");
+     public WalesParser(Sheet sheet, Progress progress, CPH outbreakSource) {
+         super(sheet, progress, outbreakSource, "Wales");
      }
 
-     public ArrayList<MoveRecord> parse() throws WorkbookParseException {
+     public Pair<ArrayList<MoveRecord>, ArrayList<MoveRecord>> parse() throws WorkbookParseException {
          Iterator<Row> rowIter = this.sheet.rowIterator();
 
          String[] headingNames = {
@@ -25,7 +27,8 @@ public class WalesParser extends Parser{
 
          parseHeadings(rowIter, headingNames);
 
-         ArrayList<MoveRecord> out = new ArrayList();
+         ArrayList<MoveRecord> outFrom = new ArrayList();
+         ArrayList<MoveRecord> outTo = new ArrayList();
 
          while (rowIter.hasNext()) {
              Row row = rowIter.next();
@@ -33,16 +36,27 @@ public class WalesParser extends Parser{
 
              MoveRecord move = new MoveRecord();
              move.id = getCellData(row, "Ref");
-             move.count = getCellData(row, "Count");
+             move.animalCount = getCellData(row, "Count");
              move.species = getCellData(row, "Species");
              move.lotID = getCellData(row, "Lot");
-             move.lotDate = getCellData(row, "Date");
-             move.locationFrom = getCellData(row, "From CPH");
-             move.locationTo = getCellData(row, "To CPH");
+             move.locationFrom = new CPH(getCellData(row, "From CPH"));
+             move.locationTo = new CPH(getCellData(row, "To CPH"));
              move.createdBy = getCellData(row, "Created By");
+             move.departCountry = move.locationFrom.getCountry();
+             move.arriveCountry = move.locationTo.getCountry();
+             move.departDate = parseDate(getCellData(row, "Date"));
+             move.arriveDate = move.departDate;
 
-             out.add(move);
+             if (!move.isEmpty()) {
+                 move.originatingSheet = this.parserName;
+                 if (move.isFromInfected(this.outbreakSource)) {
+                     outFrom.add(move);
+                 } else {
+                     outTo.add(move);
+                 }
+             }
          }
-         return out;
+
+         return Pair.of(outFrom, outTo);
      }
 }

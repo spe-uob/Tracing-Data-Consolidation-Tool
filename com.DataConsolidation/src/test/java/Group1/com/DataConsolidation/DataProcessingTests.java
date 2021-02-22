@@ -9,12 +9,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DataProcessingTests{
+
+    private CPH outbreakSource = new CPH("08/548/4000");
 
     XSSFWorkbook loadExcelFile(String path) {
         InputStream data = Thread.currentThread()
@@ -33,7 +36,7 @@ public class DataProcessingTests{
                 () -> new DataConsolidator(null, dummyProgress()));
 
         Exception e = assertThrows(WorkbookParseException.class,
-                () -> new DataConsolidator(new XSSFWorkbook(), dummyProgress()).parse());
+                () -> new DataConsolidator(new XSSFWorkbook(), dummyProgress()).parse(outbreakSource));
         assertEquals("empty workbook (no sheets)", e.getMessage());
 
         // TODO: Test workbook with no data
@@ -47,14 +50,14 @@ public class DataProcessingTests{
         XSSFWorkbook wb1 = new XSSFWorkbook();
         Sheet sheet = wb1.createSheet("test");
         Exception e = assertThrows(WorkbookParseException.class,
-                () -> new WalesParser(sheet, dummyProgress()).parse());
+                () -> new WalesParser(sheet, dummyProgress(), outbreakSource).parse());
         assertEquals("Wales: empty spreadsheet (no headings)", e.getMessage());
 
         // Should reject every sheet in this file
         XSSFWorkbook wb2 = assertDoesNotThrow(() -> loadExcelFile("wales_invalid.xlsx"));
         for (Sheet sh : wb2) {
             String testName = sh.getSheetName();
-            WalesParser p = new WalesParser(sh, dummyProgress());
+            WalesParser p = new WalesParser(sh, dummyProgress(), outbreakSource);
 
             Iterator<Row> rowIter = sh.rowIterator();
             String[] headingNames = {
@@ -127,7 +130,7 @@ public class DataProcessingTests{
         XSSFWorkbook wb3 = assertDoesNotThrow(() -> loadExcelFile("wales_valid.xlsx"));
         for (Sheet sh : wb3) {
             String testName = sh.getSheetName();
-            WalesParser p = new WalesParser(sh, dummyProgress());
+            WalesParser p = new WalesParser(sh, dummyProgress(), outbreakSource);
             assertDoesNotThrow(
                     () -> p.parse(),
                     "didn't accept valid wales sheet: " + testName);
@@ -140,14 +143,14 @@ public class DataProcessingTests{
         XSSFWorkbook wb1 = new XSSFWorkbook();
         Sheet sheet = wb1.createSheet("test");
         Exception e = assertThrows(WorkbookParseException.class,
-                () -> new ARAMSParser(sheet, dummyProgress()).parse());
+                () -> new ARAMSParser(sheet, dummyProgress(), outbreakSource).parse());
         assertEquals("ARAMS: empty spreadsheet (no headings)", e.getMessage());
 
         // Should reject every sheet in this file
         XSSFWorkbook wb2 = assertDoesNotThrow(() -> loadExcelFile("arams_invalid.xlsx"));
         for (Sheet sh : wb2) {
             String testName = sh.getSheetName();
-            ARAMSParser p = new ARAMSParser(sh, dummyProgress());
+            ARAMSParser p = new ARAMSParser(sh, dummyProgress(), outbreakSource);
 
             Iterator<Row> rowIter = sh.rowIterator();
             String[] headingNames = {
@@ -229,7 +232,7 @@ public class DataProcessingTests{
         XSSFWorkbook wb3 = assertDoesNotThrow(() -> loadExcelFile("arams_valid.xlsx"));
         for (Sheet sh : wb3) {
             String testName = sh.getSheetName();
-            ARAMSParser p = new ARAMSParser(sh, dummyProgress());
+            ARAMSParser p = new ARAMSParser(sh, dummyProgress(), outbreakSource);
             assertDoesNotThrow(
                     () -> p.parse(),
                     "didn't accept valid arams sheet: " + testName);
@@ -242,14 +245,14 @@ public class DataProcessingTests{
         XSSFWorkbook wb1 = new XSSFWorkbook();
         Sheet sheet = wb1.createSheet("test");
         Exception e = assertThrows(WorkbookParseException.class,
-                () -> new SCOTEIDParser(sheet, dummyProgress()).parse());
+                () -> new SCOTEIDParser(sheet, dummyProgress(), outbreakSource).parse());
         assertEquals("SCOT EID: empty spreadsheet (no headings)", e.getMessage());
 
         // Should reject every sheet in this file
         XSSFWorkbook wb2 = assertDoesNotThrow(() -> loadExcelFile("scoteid_invalid.xlsx"));
         for (Sheet sh : wb2) {
             String testName = sh.getSheetName();
-            SCOTEIDParser p = new SCOTEIDParser(sh, dummyProgress());
+            SCOTEIDParser p = new SCOTEIDParser(sh, dummyProgress(), outbreakSource);
 
             Iterator<Row> rowIter = sh.rowIterator();
             String[] headingNames = {
@@ -324,7 +327,7 @@ public class DataProcessingTests{
         XSSFWorkbook wb3 = assertDoesNotThrow(() -> loadExcelFile("scoteid_valid.xlsx"));
         for (Sheet sh : wb3) {
             String testName = sh.getSheetName();
-            SCOTEIDParser p = new SCOTEIDParser(sh, dummyProgress());
+            SCOTEIDParser p = new SCOTEIDParser(sh, dummyProgress(), outbreakSource);
             assertDoesNotThrow(
                     () -> p.parse(),
                     "didn't accept valid scot eid sheet: " + testName);
@@ -339,7 +342,7 @@ public class DataProcessingTests{
             System.out.println(sh.getSheetName());
         }
         DataConsolidator cs = assertDoesNotThrow(() -> new DataConsolidator(wb, dummyProgress()));
-        assertDoesNotThrow(() -> cs.parse());
+        assertDoesNotThrow(() -> cs.parse(outbreakSource).write(new FileOutputStream("/tmp/parsed_data.xlsx")));
         // TODO: Check reasonable output
     }
 }

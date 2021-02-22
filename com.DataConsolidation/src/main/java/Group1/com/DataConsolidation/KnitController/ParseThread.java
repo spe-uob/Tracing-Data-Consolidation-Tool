@@ -1,5 +1,6 @@
 package Group1.com.DataConsolidation.KnitController;
 
+import Group1.com.DataConsolidation.DataProcessing.CPH;
 import Group1.com.DataConsolidation.DataProcessing.DataConsolidator;
 import Group1.com.DataConsolidation.DataProcessing.Progress;
 import Group1.com.DataConsolidation.DataProcessing.WorkbookParseException;
@@ -31,7 +32,8 @@ class ParseThread implements Runnable{
                 outFile.createNewFile();
                 OutputStream outStream = new FileOutputStream(outFile);
                 Workbook wbIn = WorkbookFactory.create(inStream);
-                XSSFWorkbook wbOut = new DataConsolidator(wbIn, progress).parse();
+                CPH tempOutbreakSource = new CPH("08/548/4000"); // TODO: Hook this value up to the frontend
+                XSSFWorkbook wbOut = new DataConsolidator(wbIn, progress).parse(tempOutbreakSource);
                 wbOut.write(outStream);
                 logger.info("Processing done");
             } catch (IOException | WorkbookParseException e) {
