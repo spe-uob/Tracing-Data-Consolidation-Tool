@@ -5,8 +5,8 @@ import org.apache.poi.ss.usermodel.*;
 import java.util.*;
 
 public class ARAMSParser extends Parser {
-    public ARAMSParser(Sheet sheet) {
-        super(sheet, "ARAMS");
+    public ARAMSParser(Sheet sheet, Progress progress) {
+        super(sheet, progress, "ARAMS");
     }
 
     public ArrayList<MoveRecord> parse() throws WorkbookParseException {
@@ -39,6 +39,7 @@ public class ARAMSParser extends Parser {
 
         while (rowIter.hasNext()) {
             Row row = rowIter.next();
+            progress.incrementRowsProcessed();
 
             MoveRecord move = new MoveRecord();
             move.id = getCellData(row, "Movement ID");

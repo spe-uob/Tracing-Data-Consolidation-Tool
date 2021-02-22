@@ -1,6 +1,8 @@
 package Group1.com.DataConsolidation.DataProcessing;
 
 import org.apache.poi.ss.usermodel.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -9,11 +11,13 @@ public abstract class Parser {
     protected DataFormatter formatter;
     protected Map<String, Integer> headings;
     protected String parserName;
+    protected Progress progress;
 
-    public Parser(Sheet sheet, String parserName) {
+    public Parser(Sheet sheet, Progress progress, String parserName) {
         this.sheet = sheet;
         this.formatter = new DataFormatter();
         this.parserName = parserName;
+        this.progress = progress;
     }
 
     public abstract ArrayList<MoveRecord> parse() throws WorkbookParseException;

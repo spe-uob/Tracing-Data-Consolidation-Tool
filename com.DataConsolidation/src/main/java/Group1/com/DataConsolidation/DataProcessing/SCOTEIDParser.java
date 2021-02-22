@@ -5,8 +5,8 @@ import org.apache.poi.ss.usermodel.*;
 import java.util.*;
 
 public class SCOTEIDParser extends Parser {
-    public SCOTEIDParser(Sheet sheet) {
-        super(sheet, "SCOT EID");
+    public SCOTEIDParser(Sheet sheet, Progress progress) {
+        super(sheet, progress, "SCOT EID");
     }
 
     public ArrayList<MoveRecord> parse() throws WorkbookParseException {
@@ -31,6 +31,7 @@ public class SCOTEIDParser extends Parser {
 
         while (rowIter.hasNext()) {
             Row row = rowIter.next();
+            progress.incrementRowsProcessed();
 
             MoveRecord move = new MoveRecord();
             move.id = getCellData(row, "Unique_Ref");

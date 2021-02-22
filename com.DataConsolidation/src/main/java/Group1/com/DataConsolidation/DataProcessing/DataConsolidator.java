@@ -4,6 +4,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
@@ -13,10 +14,12 @@ import java.util.Objects;
 public class DataConsolidator {
 
     private Workbook wb;
+    private Progress progress;
 
-    public DataConsolidator(Workbook wb) {
+    public DataConsolidator(Workbook wb, Progress progress) {
         Assert.notNull(wb, "workbook was null");
         this.wb = wb;
+        this.progress = progress;
     }
 
     public XSSFWorkbook parse() throws WorkbookParseException {
@@ -25,21 +28,22 @@ public class DataConsolidator {
         }
 
         ArrayList<MoveRecord> moves = new ArrayList<>();
+        progress.reset();
 
         Sheet arams = wb.getSheetAt(0); // Will this always correspond to ARAMS?
-        ARAMSParser aramsParser = new ARAMSParser(arams);
+        ARAMSParser aramsParser = new ARAMSParser(arams, progress);
         moves.addAll(aramsParser.parse());
 
         Sheet scotlandFrom = wb.getSheetAt(1);
-        SCOTEIDParser scoteidParserFrom = new SCOTEIDParser(scotlandFrom);
+        SCOTEIDParser scoteidParserFrom = new SCOTEIDParser(scotlandFrom, progress);
         moves.addAll(scoteidParserFrom.parse());
 
         Sheet scotlandTo = wb.getSheetAt(2);
-        SCOTEIDParser scoteidParserTo = new SCOTEIDParser(scotlandTo);
+        SCOTEIDParser scoteidParserTo = new SCOTEIDParser(scotlandTo, progress);
         moves.addAll(scoteidParserTo.parse());
 
         Sheet wales = wb.getSheetAt(3);
-        WalesParser walesParser = new WalesParser(wales);
+        WalesParser walesParser = new WalesParser(wales, progress);
         moves.addAll(walesParser.parse());
 
         // TODO: Deduplicate the MoveRecords

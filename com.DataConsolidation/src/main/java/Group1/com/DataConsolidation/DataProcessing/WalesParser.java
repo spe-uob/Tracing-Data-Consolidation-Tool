@@ -5,8 +5,8 @@ import java.util.*;
 
 public class WalesParser extends Parser{
 
-     public WalesParser(Sheet sheet) {
-         super(sheet, "Wales");
+     public WalesParser(Sheet sheet, Progress progress) {
+         super(sheet, progress, "Wales");
      }
 
      public ArrayList<MoveRecord> parse() throws WorkbookParseException {
@@ -29,6 +29,7 @@ public class WalesParser extends Parser{
 
          while (rowIter.hasNext()) {
              Row row = rowIter.next();
+             progress.incrementRowsProcessed();
 
              MoveRecord move = new MoveRecord();
              move.id = getCellData(row, "Ref");
