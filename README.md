@@ -1,4 +1,4 @@
-# Tracing data consolidation tool
+# Tracing Data Consolidation Tool
 
 [![spe-uob](https://circleci.com/gh/spe-uob/Tracing-Data-Consolidation-Tool.svg?style=shield)](https://app.circleci.com/pipelines/github/spe-uob/Tracing-Data-Consolidation-Tool)
 
@@ -10,17 +10,14 @@ Key considerations;
 - The tool would be required to cope with large volumes
 of data and to run any reports quickly. 
 
-# Project starter guide 
-Clone com.DataConsolidation folder.
+Licensed under the MIT license (see `LICENSE.md`).
 
-open the project folder in IntelliJ.
+# Building and Running
 
-Start the server by running /src/main/java/Group1.com.DataConsolidation/Application.
+Prerequesites: [maven](https://maven.apache.org/download.cgi), [node.js](https://nodejs.org/en/download/).
 
-cd into /src/main/frontend
+1. Navigate to `com.DataConsolidation`.
+2. Run the backend via IntelliJ (you can also do this from the CLI with `mvn spring-boot:run`).
+3. Navigate to `src/main/frontend`. Run with `npm start`. If you get an error, try `npm install` and run again.
 
-Check if node_modules is present. (sometimes this goes to gitinore for some reasons, npm start wont run if this is the case)
-If node_modules isnt in the frontend folder run npm install
- 
-npm start.
-
+Step 3 should open a tab in your browser, but if not you can visit [http://localhost:3000](http://localhost:3000).
