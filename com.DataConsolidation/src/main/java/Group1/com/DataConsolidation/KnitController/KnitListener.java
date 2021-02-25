@@ -25,6 +25,7 @@ public class KnitListener implements ApplicationListener<KnitEvent> {
     @Override
     public void onApplicationEvent(KnitEvent event) {
         logger.info("event listened");
+
         ParseThread parsethread = new ParseThread("parsethread", progress);
         parsethread.start();
     }

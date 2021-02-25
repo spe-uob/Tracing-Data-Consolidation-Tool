@@ -34,11 +34,11 @@ public class Knitcontroller {
     }
     @PostMapping("/knit")
     public String knit(@RequestParam("action") String action){
-        if(action == null){
+        if(action.equals("")){
             throw new RuntimeException("No files for knitting");
         }
 
-        logger.info("Knit received here");
+        logger.info("Knit received here"+ action);
         KnitEvent knitevent = new KnitEvent(this);
         applicationEventPublisher.publishEvent(knitevent);
 
