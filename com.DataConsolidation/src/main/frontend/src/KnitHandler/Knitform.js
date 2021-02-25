@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Knitform.module.css';
 import axios from 'axios';
 import ProgressBar from '../ProgressBar/ProgressBar';
+import { backendBaseUrl } from '../config';
 
 class Knitform extends React.Component{
 	constructor(props){
@@ -16,7 +17,7 @@ class Knitform extends React.Component{
 	Knit = () => {
 		let data = new FormData();
 		data.append('action', 'Knit')
-		axios.post(`http://localhost:8080/knit`, data).then(res => {
+		axios.post(`${backendBaseUrl}/knit`, data).then(res => {
 			console.log(res.data)
 		}).catch(err => this.setState({error: err}));
 	}
@@ -36,13 +37,13 @@ class Knitform extends React.Component{
 						this.Knit()
 						console.log(showbar)
 					}}>Consolidate</button>
-					<a className={styles.button} href="http://localhost:8080/Processed.xlsx">Download</a>
+					<a className={styles.button} href={backendBaseUrl + "/Processed.xlsx"}>Download</a>
 				</div>
-				{showbar ? 
-				 <ProgressBar status = {this.state.status}></ProgressBar> 
+				{showbar ?
+				 <ProgressBar status = {this.state.status}></ProgressBar>
 				 : <></>}
 			</div>
-			
+
 
 		)
 	}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./ProgressBar.css"
 import Filler from "./Filler"
+import { backendBaseUrl } from '../config';
 
 class ProgressBar extends React.Component {
 
@@ -11,7 +12,7 @@ class ProgressBar extends React.Component {
             showbar: true,
             status: this.props.status,
         };
-        this.eventSource =  new EventSource("http://localhost:8080/Progress");
+        this.eventSource =  new EventSource(`${backendBaseUrl}/Progress`);
         // this.showbar = true; //should be fed from props but somehow doesnt work
     }
 

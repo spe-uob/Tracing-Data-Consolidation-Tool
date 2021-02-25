@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './UploadFile.module.css';
+import { backendBaseUrl } from '../config';
 
 class UploadFile extends React.Component {
 
@@ -21,7 +22,7 @@ class UploadFile extends React.Component {
 		let data = new FormData();
 		data.append('file', this.state.file);
 
-		fetch('http://localhost:8080/upload', {
+		fetch(`${backendBaseUrl}/upload`, {
 			method: 'POST',
 			body: data
 		}).then(response => {
