@@ -10,9 +10,10 @@ class ProgressBar extends React.Component {
         this.state = {
             percentage: 0,
             showbar: true,
-            status: this.props.status,
+            status: this.props.status, // TODO deal with this
         };
         this.eventSource = new EventSource(`${backendBaseUrl}/Progress`);
+        // TODO fix this (same issue as above)
         // this.showbar = true; //should be fed from props but somehow doesnt work
     }
 
@@ -36,11 +37,11 @@ class ProgressBar extends React.Component {
     }
 
     render() {
-        return (
+        return ( // TODO get rid of h4 surrounding progress bar
             <div>{this.state.showbar ?
-                <div className={styles.progressBar}>
+                <h4 className={styles.progressBar}>
                     <Filler percentage={this.state.percentage}></Filler>
-                </div>
+                </h4>
                 : <h4 className={styles.statusMessage}>{this.state.status}</h4>
             }</div>
         );

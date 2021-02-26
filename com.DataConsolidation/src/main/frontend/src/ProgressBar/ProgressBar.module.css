@@ -13,7 +13,10 @@
     transition: width .2s ease-in;
 }
 
-.statusMessage {
+h4 {
 	font-weight: inherit;
+}
+
+.statusMessage {
 	height: 60px;
 }
