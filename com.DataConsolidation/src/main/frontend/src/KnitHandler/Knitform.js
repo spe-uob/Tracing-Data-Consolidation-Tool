@@ -40,8 +40,8 @@ class Knitform extends React.Component{
 					<a className={styles.button} href={backendBaseUrl + "/Processed.xlsx"}>Download</a>
 				</div>
 				{showbar ?
-				 <ProgressBar status = {this.state.status}></ProgressBar>
-				 : <></>}
+				 <ProgressBar status={this.state.status}></ProgressBar>
+				 : null}
 			</div>
 
 

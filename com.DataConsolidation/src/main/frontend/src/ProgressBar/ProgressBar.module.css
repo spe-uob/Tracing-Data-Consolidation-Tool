@@ -1,4 +1,4 @@
-.Progress-bar {
+.progressBar {
     position: relative;
     height: 20px;
     width: 350px;
@@ -6,9 +6,14 @@
     border: 1px solid #333;
 }
 
-.Filler {
+.filler {
     background: #1da598;
     height: 100%;
     border-radius: inherit;
     transition: width .2s ease-in;
+}
+
+.statusMessage {
+	font-weight: inherit;
+	height: 60px;
 }

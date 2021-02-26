@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./ProgressBar.css"
+import styles from "./ProgressBar.module.css"
 
 class Filler extends React.Component {
     constructor(props){
@@ -9,7 +9,7 @@ class Filler extends React.Component {
     render() {
         const width = this.props.percentage;
         return (
-            <div className = "Filler" style = {{width : `${width}%`}}/>
+            <div className={styles.filler} style={{width : `${width}%`}}/>
         );
     }
 }

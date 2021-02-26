@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./ProgressBar.css"
+import styles from "./ProgressBar.module.css"
 import Filler from "./Filler"
 import { backendBaseUrl } from '../config';
 
@@ -12,7 +12,7 @@ class ProgressBar extends React.Component {
             showbar: true,
             status: this.props.status,
         };
-        this.eventSource =  new EventSource(`${backendBaseUrl}/Progress`);
+        this.eventSource = new EventSource(`${backendBaseUrl}/Progress`);
         // this.showbar = true; //should be fed from props but somehow doesnt work
     }
 
@@ -28,7 +28,7 @@ class ProgressBar extends React.Component {
         });
         if (data === 15281) {
             this.setState({
-                status: "successfully consolidate",
+                status: "Successfully consolidated",
                 showbar: false,
             });
             this.eventSource.close();
@@ -38,10 +38,10 @@ class ProgressBar extends React.Component {
     render() {
         return (
             <div>{this.state.showbar ?
-                <div className = "Progress-bar">
-                    <Filler percentage = {this.state.percentage}></Filler>
+                <div className={styles.progressBar}>
+                    <Filler percentage={this.state.percentage}></Filler>
                 </div>
-                : <div>{this.state.status}</div>  // Can you style this status like what you did with "File uploaded sucessfully thingy"
+                : <h4 className={styles.statusMessage}>{this.state.status}</h4>
             }</div>
         );
     }
