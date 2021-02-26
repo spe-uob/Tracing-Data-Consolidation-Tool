@@ -1,48 +1,49 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import "./ProgressBar.css"
 import Filler from "./Filler"
+
 class ProgressBar extends React.Component {
-    
+
     constructor(props){
         super(props);
         this.state = {
             percentage: 0,
             showbar: true,
             status: this.props.status,
-        }
+        };
         this.eventSource =  new EventSource("http://localhost:8080/Progress");
-        //this.showbar = true; //should be fed from props but somehow doesnt work
+        // this.showbar = true; //should be fed from props but somehow doesnt work
     }
+
     componentDidMount(){
-        this.eventSource.onmessage = e => this.UpdatePercentage(JSON.parse(e.data))
-        
+        this.eventSource.onmessage = e => this.UpdatePercentage(JSON.parse(e.data));
     }
 
     UpdatePercentage(data){
-      console.log(data/15281) // this is raw no of rows, more work
-      this.setState({
-          percentage: data/15281 *100,
-          showbar: true,
-      })
-      if (data === 15281) {
+        console.log(data/15281) // this is raw no of rows, more work
         this.setState({
-            status: "successfully consolidate",
-            showbar: false,
-        })
-        this.eventSource.close();
-      }
+            percentage: data/15281 * 100,
+            showbar: true,
+        });
+        if (data === 15281) {
+            this.setState({
+                status: "successfully consolidate",
+                showbar: false,
+            });
+            this.eventSource.close();
+        }
     }
+
     render() {
-        return(
-            <div> {this.state.showbar ? 
+        return (
+            <div>{this.state.showbar ?
                 <div className = "Progress-bar">
-                   <Filler percentage = {this.state.percentage}></Filler>
-            </div>: <div>{this.state.status}</div>  // Can you style this status like what you did with "File uploaded sucessfully thingy"
-                }             
-            </div>
-            
-        )
+                    <Filler percentage = {this.state.percentage}></Filler>
+                </div>
+                : <div>{this.state.status}</div>  // Can you style this status like what you did with "File uploaded sucessfully thingy"
+            }</div>
+        );
     }
-    
 }
+
 export default ProgressBar;
